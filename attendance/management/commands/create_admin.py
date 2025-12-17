@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from attendance.models import AppUser
+import os
 
 DEPARTMENT_CHOICES = ['technology','developer','ai engineer','graphic designing']
 
@@ -18,19 +19,19 @@ class Command(BaseCommand):
             
             # Email input and Validation
             while True:
-                email = input("Enter Admin Email:")
+                email = os.environ.get("ADMIN_EMAIL")
                 try:
                     validate_email(email)
                     break
                 except ValidationError:
                     self.stdout.write(self.style.ERROR("Invalid email format, Try again!"))
-            full_name = input("Enter your Full name:")
-            designation = input("Enter your designation:")
+            full_name = os.environ.get("ADMIN_FULL_NAME")
+            designation = os.environ.get("ADMIN_DESIGNATION")
 
             self.stdout.write(self.style.WARNING(f"Available Departments:\n{DEPARTMENT_CHOICES}"))
 
             while True:
-                department = input("Enter your department:")
+                department = os.environ.get("ADMIN_DEPARTMENT")
 
                 if department.lower() in DEPARTMENT_CHOICES:
                     break
@@ -38,9 +39,8 @@ class Command(BaseCommand):
             
             # Password input and Validation
             while True:
-                password = input("Enter your Password:")
-                confirm_password = input("Again Enter your Password to confirm:")
-
+                password = os.environ.get("ADMIN_PASSWORD")
+                confirm_password = os.environ.get("CONFIRM_ADMIN_PASSWORD")
                 if password != confirm_password:
                     self.stdout.write(self.style.ERROR("Password does not match, Try again!"))
                 else:
