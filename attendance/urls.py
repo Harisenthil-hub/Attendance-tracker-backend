@@ -1,7 +1,7 @@
 from .views import RegisterView,UserDeleteView,LoginView,RefreshTokenView,CheckInView
 from .views import AdminAttendanceCorrectionView,  AdminUpdateUserDetailsView, SystemStatsView
 from .views import CheckOutView,AttendanceHistoryView,UserProfileView, ChangePasswordView
-from .views import  AdminAttendanceView, UserListView, ApiWorkingTest
+from .views import  AdminAttendanceView, UserListView, AttendanceStatus, ApiWorkingTest
 from django.urls import path
 
 
@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/user/<str:user_id>/',AdminUpdateUserDetailsView.as_view(),name='admin-update-user'),
     path('admin/attendance/correction/<int:session_id>/',AdminAttendanceCorrectionView.as_view(),name='admin-attendance-correction'),
     path('admin/system-stats/',SystemStatsView.as_view(),name='system-stats'),
+    path('attendance/status/',AttendanceStatus.as_view(),name='attendance-status'),
     #testing
     path('test/',ApiWorkingTest.as_view(),name='work-test'),
 ]

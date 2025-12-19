@@ -163,7 +163,7 @@ class CheckOutView(APIView):
         return Response(
             {
                 "message": "Check-out Successful",
-                "Session": serializer.data
+                "session": serializer.data
             },
             status=status.HTTP_200_OK
         )
@@ -401,6 +401,34 @@ class SystemStatsView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+class AttendanceStatus(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        user = request.user
+        active_attendance = AttendanceSession.objects.filter(
+            user=request.user,
+            check_out__isnull=True
+        ).first()
+
+        if active_attendance:
+            return Response({
+                "is_checked_in": True,
+                "checkin_time": active_attendance.check_in
+            })
+        
+
+        last_attendance = AttendanceSession.objects.filter(
+            user=user,
+            check_out__isnull=False
+        ).order_by('-check_out').first()
+
+        return Response({
+            "is_checked_in": False,
+            "checkout_time": last_attendance.check_out if last_attendance else None
+        })
+
 
 class ApiWorkingTest(APIView):
     def get(self,request):

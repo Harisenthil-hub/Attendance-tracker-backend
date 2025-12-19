@@ -17,6 +17,8 @@ def generate_user_id(dept,doj):
         'graphic designing': 'grd'
     }
 
+    
+
     dept_code = dept_map.get(dept.lower())
 
     if not dept_code:
